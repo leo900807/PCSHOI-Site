@@ -1,0 +1,39 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-10 col-lg-5 mx-auto login-card">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold mb-4">Reset password</h4>
+            </div>
+            <form method="post" data-method="patch" action="/forgotpwd/resetpwd" onsubmit="return checkForm();">
+                <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                <input id="token" name="token" value="<%= token %>" type="hidden" />
+                <div class="mb-3">
+                    <input id="newpassword" class="form-control" name="newpassword" type="password" placeholder="New password" data-required="Password is required" />
+                </div>
+                <div class="mb-3">
+                    <input id="renewpassword" class="form-control" name="renewpassword" type="password" placeholder="Repeat new password" data-required="Repeat password is required" />
+                </div>
+                <div class="text-center">
+                    <ul class="error-message">
+                        <% if(typeof resetPasswordError !== "undefined"){ %>
+                            <% resetPasswordError.forEach(error => { %>
+                                <li><font color="red"><%= error %></font></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="width: 50%">Reset password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(() => {
+    $("#username").focus();
+});
+</script>

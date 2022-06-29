@@ -1,0 +1,68 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header row mb-3">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-9">
+                    <h4 class="fw-bold mb-0"><%= title %></h4>
+                </div>
+                <div class="col align-self-end">
+                    <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                        <a href="/pastexams/<%= id %>" data-confirm="Are you sure?&#010;&#010;The attachments will also be deleted." data-method="delete" class="float-end btn btn-sm btn-danger">Delete</a>
+                        <a href="/pastexams/<%= id %>/edit" class="float-end btn btn-sm btn-primary me-2">Edit</a>
+                    <% } %>
+                    <h4 class="d-inline">
+                        <small>
+                            <% if(isPinned){ %>
+                                <i class="float-end bi bi-pin-angle-fill me-2 pt-1"></i>
+                            <% } %>
+                            <% if(isPublic === false){ %>
+                                <i class="float-end bi bi-lock-fill me-2 pt-1"></i>
+                            <% } %>
+                        </small>
+                    </h4>
+                </div>
+            </div>
+            <div class="card article-content mb-3">
+                <div class="card-body">
+                    <% if(content.length > 0 || attachments.length == 0){ %>
+                        <div class="mb-5">
+                            <%- content %>
+                        </div>
+                    <% } %>
+                    <% if(attachments.length > 0){ %>
+                        <div class="mb-3">
+                            <h6 class="fw-bold mb-1"><i class="bi bi-paperclip"></i> Attachments</i></h6>
+                            <ul class="uploaded-files">
+                                <% attachments.forEach(attachment => { %>
+                                    <li>
+                                        <% switch(attachment.filename.split(".").pop()){
+                                            case "zip": %>
+                                                <i class="bi bi-file-zip-fill me-1"></i>
+                                                <% break;
+                                            case "pdf": %>
+                                                <i class="bi bi-file-pdf-fill me-1"></i>
+                                                <% break;
+                                            default: %>
+                                                <i class="bi bi-file-earmark-text-fill me-1"></i>
+                                        <% } %>
+                                        <a href="/attachments/<%= attachment.realFilename %>"><%= attachment.filename %></a>
+                                   </li>
+                                <% }) %>
+                            </ul>
+                        </div>
+                    <% } %>
+                    <div class="text-end small">
+                        <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                            <strong>Author:</strong> <%= author.nickname %> (<%= author.username %>)<br>
+                        <% } %>
+                        <strong>Updated At:</strong> <%= updatedAt %><br>
+                        <strong>Created At:</strong> <%= createdAt %>
+                    </div>
+                </div>
+            </div>
+            <a href="/pastexams" class="btn btn-sm btn-secondary">Back to pastexams</a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+node_modules/
+log/
+build/
+.adminjs/
+src/attachment
+.*.*.swp
+src/registration-metadata.json
+src/public/.well-known/*
+
+# secret files
+.env
+data-source.ts

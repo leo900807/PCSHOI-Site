@@ -1,0 +1,61 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-9 col-lg-6 mx-auto registrationinfo-card">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="mb-4">
+                <h4 class="fw-bold d-inline">Registration info</h4>
+                <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                    <a href="/register/index" class="float-end btn btn-sm btn-secondary">List of all registrations</a>
+                    <a href="/register/settings" class="float-end btn btn-sm btn-primary me-2">Registration settings</a>
+                <% } else { %>
+                    <% if(typeof loggedInUsername !== "undefined"){ %>
+                        <a href="/register/index" class="float-end btn btn-sm btn-secondary">Registration history</a>
+                    <% } %>
+                <% } %>
+            </div>
+            <% if(typeof registration !== "undefined"){ %>
+                <div class="mb-3">
+                    Please contact to the admins to change registration infos if needed.<br>
+                    You can change password for practice session during registration phase.
+                </div>
+                <div class="mb-3">
+                    <strong>Year of contest:</strong> <%= registration.registerYear %>
+                </div>
+                <div class="mb-3">
+                    <strong>Student ID:</strong> <%= registration.studentId %>
+                </div>
+                <div class="mb-3">
+                    <strong>Class & Seat:</strong> <%= registration.classSeat %>
+                </div>
+                <div class="mb-3">
+                    <strong>Verification Code:</strong> <%= registration.verificationCode %>
+                </div>
+                <div>
+                <% if(typeof isRegistrationPhase !== "undefined" && isRegistrationPhase === false){ %>
+                    <a href="/register/edit" class="btn btn-sm btn-primary disabled">Change password for practice session</a>
+                <% } else { %>
+                    <a href="/register/edit" class="btn btn-sm btn-primary">Change password for practice session</a>
+                <% } %>
+                </div>
+            <% } else { %>
+                <% if(typeof isRegistrationPhase !== "undefined" && isRegistrationPhase === false){ %>
+                    <div class="mb-3">
+                        It's not registration phase.<br>
+                        If you want to register, please contact to the admins.
+                    </div>
+                    <div class="text-center">
+                        <a href="/register/new" class="btn btn-lg btn-success disabled">Register now</a>
+                    </div>
+                <% } else { %>
+                    <div class="mb-3">
+                        You haven't registered now, please click the button below to register.
+                    </div>
+                    <div class="text-center">
+                        <a href="/register/new" class="btn btn-lg btn-success">Register now</a>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+</div>

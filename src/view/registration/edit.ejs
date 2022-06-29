@@ -1,0 +1,40 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-8 col-lg-5 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold">Register for Contest</h4>
+            </div>
+            <form method="post" data-method="patch" action="/register" onsubmit="return checkForm();">
+                <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                <div class="form-group mb-3">
+                    <label for="newpassword">New password for contest system in practice session</label>
+                    <input id="newpassword" class="form-control" name="newpassword" type="password" data-required="Password is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="renewpassword">Repeat new password</label>
+                    <input id="renewpassword" class="form-control" name="renewpassword" type="password" data-required="Repeat new password is required" />
+                </div>
+                <div class="text-center">
+                    <ul class="error-message">
+                        <% if(typeof contestRegistrationEditError !== "undefined"){ %>
+                            <% contestRegistrationEditError.forEach(error => { %>
+                                <li><font color="red"><%= error %></font></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="width: 50%">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(() => {
+    $("#username").focus();
+});
+</script>

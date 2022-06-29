@@ -1,0 +1,29 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-9 col-lg-6 mx-auto userinfo-card">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="mb-4">
+                <h4 class="fw-bold">User info</h4>
+            </div>
+            <div class="mb-3">
+                Please contact to the admins to change username or realname if needed.
+            </div>
+            <div class="mb-3">
+                <strong>Username:</strong> <%= username %>
+            </div>
+            <div class="mb-3">
+                <strong>Nickname:</strong> <%= nickname %>
+            </div>
+            <div class="mb-3">
+                <strong>Realname:</strong> <%= realname %>
+            </div>
+            <div class="mb-3">
+                <strong>Email:</strong> <%= email %>
+            </div>
+            <div>
+                <a href="/users/edit" class="btn btn-sm btn-primary">Edit user data</a>
+            </div>
+        </div>
+    </div>
+</div>

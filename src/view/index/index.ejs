@@ -1,0 +1,68 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <h3 class="fw-bold mb-4">Latest articles</h3>
+            <hr class="col-12 title-hr">
+            <table class="table">
+                <tbody>
+                    <% pinnedArticles.forEach(article => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= article.createdAt %></td>
+                            <% if(article.isPublic){ %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><i class="bi bi-lock-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                    <% articles.forEach(article => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= article.createdAt %></td>
+                            <% if(article.isPublic){ %>
+                                <td class="table-cell text-truncate"><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-lock-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <span style="text-align: right; display: block;">(<a href="/articles">All articles</a>)</span>
+        </div>
+    </div>
+</div>
+<div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto pt-5">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <h3 class="fw-bold mb-4">Pastexams</h3>
+            <hr class="col-12 title-hr">
+            <table class="table">
+                <tbody>
+                    <% pinnedPastexams.forEach(pastexam => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= pastexam.createdAt %></td>
+                            <% if(pastexam.isPublic){ %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><a href="/pastexams/<%= pastexam.id %>"><%= pastexam.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><i class="bi bi-lock-fill me-2"></i><a href="/pastexam/<%= pastexam.id %>"><%= pastexam.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                    <% pastexams.forEach(pastexam => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= pastexam.createdAt %></td>
+                            <% if(pastexam.isPublic){ %>
+                                <td class="table-cell text-truncate"><a href="/pastexams/<%= pastexam.id %>"><%= pastexam.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-lock-fill me-2"></i><a href="/pastexams/<%= pastexam.id %>"><%= pastexam.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <span style="text-align: right; display: block;">(<a href="/pastexams">All pastexams</a>)</span>
+        </div>
+    </div>
+</div>

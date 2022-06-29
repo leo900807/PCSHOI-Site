@@ -1,0 +1,56 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-8 col-lg-5 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold">Register</h4>
+            </div>
+            <form method="post" action="/users" onsubmit="return checkForm();">
+                <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                <div class="form-group mb-3">
+                    <label for="username">Username (Cannot be changed)</label>
+                    <input id="username" class="form-control" name="username" value="<%= typeof username !== "undefined" ? username : "" %>" data-required="Username is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="password">Password</label>
+                    <input id="password" class="form-control" name="password" type="password" data-required="Password is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="repassword">Repeat Password</label>
+                    <input id="repassword" class="form-control" name="repassword" type="password" data-required="Repeat password is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="nickname">Nickname</label>
+                    <input id="nickname" class="form-control" name="nickname" value="<%= typeof nickname !== "undefined" ? nickname : "" %>" data-required="Nickname is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="realname">Realname (This won't be shown to others, cannot be changed)</label>
+                    <input id="realname" class="form-control" name="realname" value="<%= typeof realname !== "undefined" ? realname : "" %>" data-required="Realname is required" />
+                </div>
+                <div class="form-group mb-3">
+                    <label for="email">Email</label>
+                    <input id="email" class="form-control" name="email" type="email" value="<%= typeof email !== "undefined" ? email : "" %>" data-required="Email is required" />
+                </div>
+                <div class="text-center">
+                    <ul class="error-message">
+                        <% if(typeof registrationError !== "undefined"){ %>
+                            <% registrationError.forEach(error => { %>
+                                <li><font color="red"><%= error %></font></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="width: 50%">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(() => {
+    $("#username").focus();
+});
+</script>

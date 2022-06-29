@@ -1,0 +1,75 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4">
+                <h3 class="fw-bold d-inline">Articles</h3>
+                <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                    <a href="/articles/new" class="float-end btn btn-sm btn-success">New article</a>
+                <% } %>
+            </div>
+            <hr class="col-12 title-hr">
+            <table class="table">
+                <tbody>
+                    <% pinnedArticles.forEach(article => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= article.createdAt %></td>
+                            <% if(article.isPublic){ %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-pin-angle-fill me-2"></i><i class="bi bi-lock-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                    <% articles.forEach(article => { %>
+                        <tr class="table-row">
+                            <td class="table-cell table-datetime"><%= article.createdAt %></td>
+                            <% if(article.isPublic){ %>
+                                <td class="table-cell text-truncate"><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } else { %>
+                                <td class="table-cell text-truncate"><i class="bi bi-lock-fill me-2"></i><a href="/articles/<%= article.id %>"><%= article.title %></a></td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <% if(pageCount !== 0){ %>
+                        <% if(nowOnPage === 1){ %>
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&laquo;</span></a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/articles?page=<%= nowOnPage - 1 %>"><span>&laquo;</span></a></li>
+                        <% } %>
+                    <% } %>
+                    <% let omitted = false; %>
+                    <% for(let i = 1; i <= pageCount; i++){ %>
+                        <% if(i === nowOnPage){ %>
+                            <% omitted = false; %>
+                        <% } %>
+                        <% if(pageCount > 10 && Math.abs(i - nowOnPage) > 3 && i > 5 && pageCount - i >= 5){ %>
+                            <% if(!omitted){ %>
+                                <% omitted = true; %>
+                                <li class="page-item"><a class="page-link" href="#">...</a></li>
+                            <% } %>
+                        <% } else { %>
+                            <% if(i === nowOnPage){ %>
+                                <li class="page-item active"><a class="page-link" href="#"><%= i %></a></li>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="/articles?page=<%= i %>"><%= i %></a></li>
+                            <% } %>
+                        <% } %>
+                    <% } %>
+                    <% if(pageCount !== 0){ %>
+                        <% if(nowOnPage === pageCount){ %>
+                            <li class="page-item disabled"><a class="page-link" href="#"><span>&raquo;</span></a></li>
+                        <% } else { %>
+                            <li class="page-item"><a class="page-link" href="/articles?page=<%= nowOnPage + 1 %>"><span>&raquo;</span></a></li>
+                        <% } %>
+                    <% } %>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

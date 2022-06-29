@@ -1,0 +1,24 @@
+import { DataSource, DataSourceOptions } from "typeorm";
+import { SeederOptions } from "typeorm-extension";
+
+const options: DataSourceOptions & SeederOptions = {
+    type: "mysql",
+    host: "localhost",
+    username: "username",  // to be modified
+    password: "password",  // to be modified
+    database: "pcshoi_site",
+    synchronize: true,
+    logging: false,
+    entities: [
+        "./src/entity/*.ts"
+    ],
+    migrations: [
+        "./src/migration/*.ts"
+    ],
+    subscribers: [],
+    seeds: [
+        "./src/seed/*.ts"
+    ]
+};
+
+export const AppDataSource = new DataSource(options);

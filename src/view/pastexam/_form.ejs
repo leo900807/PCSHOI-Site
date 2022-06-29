@@ -1,0 +1,32 @@
+<div class="form-group mb-3">
+    <label for="title">Title</label>
+    <input id="title" class="form-control" name="title" value="<%= typeof title !== "undefined" ? title : "" %>" data-required="Title is required" />
+</div>
+<div class="form-group mb-3">
+    <label for="content">Content</label>
+    <textarea id="content" class="form-control" rows="10" name="content"><%= typeof content !== "undefined" ? content : "" %></textarea>
+</div>
+<div class="form-group mb-3">
+    <label for="attachments">Attachments (Max size per file: 1 GiB)</label>
+    <input id="attachments" class="form-control" name="attachments" type="file" multiple />
+</div>
+<% if(typeof attachments !== "undefined" && attachments.length > 0){ %>
+    <div class="mb-4">
+        <label class="mb-1">Uploaded attachments</label>
+        <ul class="uploaded-files">
+            <% attachments.forEach(attachment => { %>
+                <li><a class="delete-icon" href="/attachments/<%= attachment.realFilename %>" data-confirm="Are you sure?" data-method="delete"><i class="bi bi-trash-fill"></i></a> <a href="/attachments/<%= attachment.realFilename %>"><%= attachment.filename %></a></li>
+            <% }) %>
+        </ul>
+    </div>
+<% } %>
+<div class="form-group mb-3">
+    <div class="form-check">
+        <input id="isPinned" class="form-check-input" name="isPinned" type="checkbox" value="true" <%= typeof isPinned !== "undefined" && (isPinned === true || isPinned === "true") ? "checked" : "" %>>
+        <label class="form-check-label" for="isPinned">Pinned</label>
+    </div>
+    <div class="form-check">
+        <input id="isPublic" class="form-check-input" name="isPublic" type="checkbox" value="true" <%= typeof isPublic !== "undefined" && (isPublic === true || isPublic === "true") ? "checked" : "" %>>
+        <label class="form-check-label" for="isPublic">Public</label>
+    </div>
+</div>

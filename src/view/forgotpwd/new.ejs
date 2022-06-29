@@ -1,0 +1,38 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-8 col-lg-4 mx-auto login-card">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold">Forgot password</h4>
+            </div>
+            <form class="mb-3" method="post" action="/forgotpwd" onsubmit="return checkForm();">
+                <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                <div class="mb-3">
+                    <input id="username" class="form-control" name="username" value="<%= typeof username !== "undefined" ? username : "" %>" placeholder="Username" data-required="Username is required" />
+                </div>
+                <div class="mb-3">
+                    <input id="email" class="form-control" name="email" type="email" value="<%= typeof email !== "undefined" ? email : "" %>" placeholder="Email" data-required="Email is required" />
+                </div>
+                <div class="text-center">
+                    <ul class="error-message">
+                        <% if(typeof forgotPasswordError !== "undefined"){ %>
+                            <% forgotPasswordError.forEach(error => { %>
+                                <li><font color="red"><%= error %></font></li>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success" style="width: 50%">Send Mail</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(() => {
+    $("#username").focus();
+});
+</script>

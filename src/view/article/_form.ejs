@@ -1,0 +1,19 @@
+<input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+<div class="form-group mb-3">
+    <label for="title">Title</label>
+    <input id="title" class="form-control" name="title" value="<%= typeof title !== "undefined" ? title : "" %>" data-required="Title is required" />
+</div>
+<div class="form-group mb-3">
+    <label for="content">Content</label>
+    <textarea id="content" class="form-control" rows="10" name="content"><%= typeof content !== "undefined" ? content : "" %></textarea>
+</div>
+<div class="mb-3">
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="isPinned" value="true" id="isPinned" <%= typeof isPinned !== "undefined" && (isPinned === true || isPinned === "true") ? "checked" : "" %>>
+        <label class="form-check-label" for="pinned">Pinned</label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="isPublic" value="true" id="isPublic" <%= typeof isPublic !== "undefined" && (isPinned === true || isPinned === "true") ? "checked" : "" %>>
+        <label class="form-check-label" for="pinned">Public</label>
+    </div>
+</div>

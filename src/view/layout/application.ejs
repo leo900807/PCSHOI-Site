@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8">
+        <title><%= typeof pageTitle !== "undefined" ? `${pageTitle} - ` : "" %>PCSHOI Site</title>
+        <meta name="description" content="A site about PCSH information contest">
+        <meta name="csrf-token" content="<%= csrfToken %>">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="/css/index.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+        <script>window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };</script>
+    </head>
+    <body>
+        <div id="bg-div"></div>
+        <div style="background-color: #000000">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark" role="navigation" style="background-color: #000000">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="/"><span style="padding-left: 15px;">PCSHOI Site</span></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="/articles">Articles</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/pastexams">Pastexams</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/register">Registration</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                        </ul>
+                        <ul class="navbar-nav ms-auto">
+                            <% if(typeof loggedInUsername === "undefined"){ %>
+                                <li class="nav-item"><a class="nav-link" href="/login"><i class="bi bi-box-arrow-in-right"></i> Login</a></li>
+                            <% } else { %>
+                                <li class="nav-item"><a class="nav-link" href="/login" data-method="delete"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
+                                <li class="nav-item"><a class="nav-link" href="/users"><span class="bi bi-person-fill"></span> <%= loggedInNickname %> (<%= loggedInUsername %>)</a></li>
+                            <% } %>
+                            <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                                <!-- <li class="nav-item"><a class="nav-link" href="#"><span class="bi bi-person-fill"></span> Admin</a></li> -->
+                            <% } %>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div class="container-fluid">
+            <% if(flashError.length > 0){ %>
+                <% flashError.forEach(msg => { %>
+                    <div class="alert alert-danger alert-dismissible fade show col-lg-3">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Error! </strong> <%= msg %>
+                    </div>
+                <% }) %>
+            <% } %>
+            <% if(flashSuccess.length > 0){ %>
+                <% flashSuccess.forEach(msg => { %>
+                    <div class="alert alert-success alert-dismissible fade show col-lg-3">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <strong>Success! </strong> <%= msg %>
+                    </div>
+                <% })%>
+            <% } %>
+
+            <%- body -%>
+
+        </div>
+        <div class="container-fluid bottom-0 end-0" style="position: fixed;">
+            <% if(flashBottomRightError.length > 0){ %>
+                <% flashBottomRightError.forEach(msg => { %>
+                    <div class="alert alert-danger alert-dismissible fade show col-lg-3 col-10 col-sm-10 col-md-6 ms-auto fade-out-5">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <%- msg %>
+                    </div>
+                <% }) %>
+            <% } %>
+            <% if(flashBottomRightSuccess.length > 0){ %>
+                <% flashBottomRightSuccess.forEach(msg => { %>
+                    <div class="alert alert-success alert-dismissible fade show col-lg-3 col-10 col-sm-10 col-md-6 ms-auto fade-out-5">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        <%- msg %>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+        <div class="container-fluid bottom-0 end-0 mb-5"></div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="/javascript/index.js"></script>
+    </body>
+</html>

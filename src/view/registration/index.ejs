@@ -1,0 +1,63 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4">
+                <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                    <h3 class="fw-bold d-inline">Registration list of <%= nowOnYear %> year</h3>
+                    <a class="btn btn-sm btn-success float-end ms-2" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
+                    <form class="d-inline" method="post" action="/register/index" onSubmit="return checkform();">
+                        <button type="submit" class="btn btn-sm btn-secondary float-end ms-2">Filter</button>
+                        <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                        <div class="float-end d-inline">
+                            <input id="yearofcontest" class="form-control form-control-sm" name="yearofcontest" value="<%= typeof yearOfContest !== "undefined" ? yearOfContest : "" %>" placeholder="Year of contest" required />
+                        </div>
+                    </form>
+                <% } else { %>
+                    <h3 class="fw-bold d-inline">Registration history</h3>
+                <% } %>
+            </div>
+            <hr class="col-12 title-hr">
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                            <th class="table-head fw-bold">Registrant</th>
+                        <% } %>
+                        <th class="table-head fw-bold">Class & Seat</th>
+                        <th class="table-head fw-bold">Student ID</th>
+                        <th class="table-head fw-bold">Verification Code</th>
+                        <th class="table-head fw-bold" width="10%">Score</th>
+                        <th class="table-head fw-bold" width="10%">Rank</th>
+                        <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                            <th class="table-head fw-bold" width="18%">Delete</th>
+                        <% } %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% registrations.forEach(registration => { %>
+                        <tr class="table-row">
+                            <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                                <td class="table-cell"><%= registration.registrant.realname %></td>
+                            <% } %>
+                            <td class="table-cell"><%= registration.classSeat %></td>
+                            <td class="table-cell"><%= registration.studentId %></td>
+                            <td class="table-cell"><%= registration.verificationCode %></td>
+                            <td class="table-cell"><%= typeof registration.score !== "undefined" && registration.score ? registration.score : "N/A" %></td>
+                            <td class="table-cell<%= typeof registration.rank !== "undefined" && registration.rank && registration.rank <= 10 ? ` rank-${registration.rank}` : "" %>"><%= typeof registration.rank !== "undefined" && registration.rank ? registration.rank : "N/A" %></td>
+                            <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                                <td class="table-cell">
+                                    <form class="row ms-0 me-0" method="post" data-method="delete" action="/register/<%= registration.id %>">
+                                        <input id="verificationcode" class="form-control form-control-sm" name="verificationcode" placeholder="Verification Code" style="width: 60%;" required />
+                                        <button type="submit" class="btn btn-sm btn-danger ms-1" style="width: 30%;">Delete</button>
+                                    </form>
+                                </td>
+                            <% } %>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-8 mx-auto">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold">New article</h4>
+            </div>
+            <form method="post" action="/articles" onsubmit="return checkForm();">
+                <%- partial("_form.ejs") %>
+                <ul class="error-message">
+                    <% if(typeof newArticleError !== "undefined"){ %>
+                        <% newArticleError.forEach(error => { %>
+                            <li><font color="red"><%= error %></font></li>
+                        <% }) %>
+                    <% } %>
+                </ul>
+                <button type="submit" class="btn btn-success">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
