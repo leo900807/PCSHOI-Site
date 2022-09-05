@@ -236,4 +236,4 @@ AppDataSource.initialize().then(async connection => {
 
     console.log(`Express server has started on port ${process.env.PORT || 3000}.`);
 
-}).catch(error => console.log(error));
+}).catch(err => console.error(err));
