@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Pastexam } from "../entity/Pastexam";
 import { adjustTimeString } from "./AppHelper";
 import * as multer from "multer";
+import { TokenGenerator } from "ts-token-generator";
 import * as path from "path";
 import * as fs from "fs";
 
@@ -15,10 +16,11 @@ const storage = multer.diskStorage({
         cb(null, attachmentDirectory);
     },
     filename: function(req, file, cb){
+        const generator = new TokenGenerator({ bitSize: 32 });
         file.originalname = Buffer.from(file.originalname, "latin1").toString("utf8");
         const extension = path.extname(file.originalname);
         const filename = path.basename(file.originalname, extension);
-        cb(null, `${filename}-${Date.now()}${extension}`);
+        cb(null, `${filename}-${generator.generate()}-${Date.now()}${extension}`);
     }
 });
 
