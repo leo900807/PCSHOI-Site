@@ -1,9 +1,37 @@
 import { Request, Response, NextFunction } from "express";
 import { body } from "express-validator";
+import { isNumber, isPositiveInteger } from "./AppHelper";
+import * as multer from "multer";
+import { TokenGenerator } from "ts-token-generator";
 import * as path from "path";
 import * as fs from "fs";
 
 export const REGISTRATION_METADATA_FULLPATH = path.join(__dirname, "../", process.env.REGISTRATION_METADATA_FILE);
+
+export const tmpDirectory = path.join(__dirname, "../tmp");
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb){
+        fs.existsSync(tmpDirectory) || fs.mkdirSync(tmpDirectory);
+        cb(null, tmpDirectory);
+    },
+    filename: function(req, file, cb){
+        const generator = new TokenGenerator({ bitSize: 128 });
+        file.originalname = Buffer.from(file.originalname, "latin1").toString("utf-8");
+        const extension = path.extname(file.originalname);
+        const filename = path.basename(file.originalname, extension);
+        cb(null, `${filename}-${generator.generate()}-${Date.now()}${extension}`);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: {
+        fieldNameSize: 200,
+        fieldSize: 4194304,
+        fileSize: Number(process.env.MAX_FILE_SIZE)
+    }
+});
 
 export type RegistrationMetadata = {
     yearOfContest: number;
@@ -24,11 +52,33 @@ type RegistrationEditBody = {
     renewpassword?: string;
 };
 
+export type ScoreRank = {
+    registerYear: number;
+    studentId: string;
+    score: number;
+    rank: number;
+};
+
 export const REGISTRATION_METADATA_DEFAULT: RegistrationMetadata = {
     yearOfContest: -1,
     registerStart: new Date(2000, 11, 31, 8, 0, 0),
     registerEnd: new Date(2000, 11, 31, 8, 0, 0)
 };
+
+export function uploadFile(req: Request, res: Response, next: NextFunction){
+    upload.single("scorerank")(req, res, err => {
+        if(err instanceof multer.MulterError){
+            if(err.code === "LIMIT_FILE_SIZE"){
+                req.flash("bottomRightError", "File is too large to upload");
+                if(req.method === "POST")
+                    return res.redirect("back");
+                else
+                    return res.sendStatus(422);
+            }
+        }
+        next();
+    });
+}
 
 export async function studentIdValidator(req: Request, res: Response, next: NextFunction){
     await body("studentid").exists().trim().notEmpty().withMessage("Student ID is required").bail()
@@ -137,4 +187,25 @@ export function getRegistrationMetadata(): Promise<RegistrationMetadata>{
             }
         });
     });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function scoreRankChecker(obj: any): obj is ScoreRank[]{
+    const typedObj = obj as ScoreRank[];
+    return (
+        typeof typedObj === "object" &&
+        Array.isArray(typedObj) &&
+        typedObj.every((e: ScoreRank) => {
+            return (
+                typeof e === "object" &&
+                typeof e.registerYear === "string" &&
+                isPositiveInteger(e.registerYear) &&
+                typeof e.studentId === "string" &&
+                typeof e.score === "string" &&
+                isNumber(e.score) &&
+                typeof e.rank === "string" &&
+                isPositiveInteger(e.rank)
+            );
+        })
+    );
 }

@@ -4,7 +4,7 @@ import { AppDataSource } from "../data-source";
 import { AppController } from "./AppController";
 import { Pastexam } from "../entity/Pastexam";
 import { Attachment } from "../entity/Attachment";
-import { isAdmin, adjustTimeString, checkIdValid, isNumber, errorGet, errorSet } from "../helper/AppHelper";
+import { isAdmin, adjustTimeString, checkIdValid, isPositiveInteger, errorGet, errorSet } from "../helper/AppHelper";
 import { NormPastexam, normalizePastexam, uploadFile } from "../helper/PastexamHelper";
 import { body } from "express-validator";
 import * as path from "path";
@@ -35,12 +35,10 @@ export class PastexamController extends AppController{
         let nowOnPage: number;
         if(!page)
             nowOnPage = 1;
-        else if(!isNumber(page))
-            return next("Not Found");
-        else if(Number(page) > 0)
+        else if(isPositiveInteger(page))
             nowOnPage = Number(page);
         else
-            return next("NotFound");
+            return next("Not Found");
 
         // get page count
         if(req.isAuthenticated() && req.user.admin)

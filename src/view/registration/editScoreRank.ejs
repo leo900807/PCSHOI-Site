@@ -1,0 +1,20 @@
+<% layout("layout/application.ejs") -%>
+
+<div class="col-12 col-sm-12 col-md-12 col-lg-6 mx-auto editscorerank-card">
+    <div class="card">
+        <div class="card-body mt-3 mb-3 ms-5 me-5">
+            <div class="page-header mb-4 text-center">
+                <h4 class="fw-bold">Edit score &amp; rank</h4>
+            </div>
+            <form method="post" data-method="patch" action="/register/upload?_csrf=<%= csrfToken %>" enctype="multipart/form-data" onsubmit="return checkForm();">
+                <div class="form-group mb-3">
+                    <label for="scorerank">CSV File contains below columns, "registerYear", "studentId", "score", "rank"</label>
+                    <input id="scorerank" class="form-control" name="scorerank" type="file" />
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -5,8 +5,11 @@ import { AppDataSource } from "../data-source";
 import { AppController } from "./AppController";
 import { Registration } from "../entity/Registration";
 import { User } from "../entity/User";
-import { isLoggedIn, isAdmin, adjustTimeString, checkIdValid, isNumber, errorGet, errorSet } from "../helper/AppHelper";
+import { isLoggedIn, isAdmin, adjustTimeString, checkIdValid, isPositiveInteger, errorGet, errorSet } from "../helper/AppHelper";
 import { RegistrationMetadata,  // eslint-disable-line @typescript-eslint/no-unused-vars
+         ScoreRank,
+         tmpDirectory,
+         uploadFile,
          yearOfContestValidator,
          registerStartValidator,
          registerEndValidator,
@@ -17,10 +20,14 @@ import { RegistrationMetadata,  // eslint-disable-line @typescript-eslint/no-unu
          newpasswordValidator,
          renewpasswordValidator,
          getRegistrationMetadata,
-         setRegistrationMetadata } from "../helper/RegistrationHelper";
+         setRegistrationMetadata,
+         scoreRankChecker } from "../helper/RegistrationHelper";
 import { encrypt } from "../helper/PasswordHelper";
 import { sendMail } from "../helper/MailingHelper";
 import ObjectsToCsv = require("objects-to-csv");
+import CsvParser = require("csv-parser");
+import * as path from "path";
+import * as fs from "fs";
 
 type RegistrationForm = {
     _csrf?: string;
@@ -69,10 +76,10 @@ export class RegistrationController extends AppController{
         let nowOnYear: number;
         if(!year)
             nowOnYear = metadata.yearOfContest;
-        else if(!isNumber(year))
-            return next("Not Found");
-        else
+        else if(isPositiveInteger(year))
             nowOnYear = Number(year);
+        else
+            return next("Not Found");
         const registrations: Registration[] = await this.registrationRepository.find({ where: { registerYear: nowOnYear }, relations: { registrant: true }, order: { createdAt: "ASC" } });
         res.locals.pageTitle = "Registration list";
         res.locals.nowOnYear = nowOnYear;
@@ -263,10 +270,10 @@ export class RegistrationController extends AppController{
         let nowOnYear: number;
         if(!year)
             nowOnYear = metadata.yearOfContest;
-        else if(!isNumber(year))
-            return next("Not Found");
-        else
+        else if(isPositiveInteger(year))
             nowOnYear = Number(year);
+        else
+            return next("Not Found");
         const registrations: (Registration & { email?: string })[] = await this.registrationRepository
             .createQueryBuilder("registration")
             .select([
@@ -294,6 +301,56 @@ export class RegistrationController extends AppController{
         const csv = await new ObjectsToCsv(registrations).toString();
         res.writeHead(200, { "Content-Disposition": `attachment; filename="Registration list of ${nowOnYear} year.csv"`, "Content-Type": "text/plain" });
         res.end(Buffer.from(csv, "utf8"));
+    }
+
+    @Get("/upload")
+    @Use(isAdmin)
+    async editScoreRank(@Req req: Request, @Res res: Response){
+        res.locals.pageTitle = "Edit score & rank";
+        res.render("registration/editScoreRank.ejs");
+    }
+
+    @Patch("/upload")
+    @Use(isAdmin)
+    @Use(uploadFile)
+    async updateScoreRank(@Req req: Request, @Res res: Response){
+        const data: ScoreRank[] = [];
+        if(!req.file){
+            req.flash("bottomRightError", "CSV file is required");
+            return res.sendStatus(422);
+        }
+        if(req.file.mimetype !== "text/csv"){
+            req.flash("bottomRightError", "Only accept CSV file");
+            return res.sendStatus(422);
+        }
+        fs.createReadStream(path.join(tmpDirectory, req.file.filename)).pipe(CsvParser()).on("data", e => data.push(e)).on("end", async() => {
+            fs.unlink(path.join(tmpDirectory, req.file.filename), err => {
+                if(err)
+                    console.log(err);
+            });
+            if(!scoreRankChecker(data)){
+                req.flash("bottomRightError", "Format of CSV file is wrong");
+                return res.sendStatus(422);
+            }
+            const whereCondition: { registerYear: number, studentId: string }[] = [];
+            const dataToUpdate: { [key: string]: { score: number, rank: number } } = {};
+            data.forEach(datum => {
+                datum.score = Number(datum.score as unknown as string);
+                datum.rank = Number(datum.rank as unknown as string);
+                dataToUpdate[`${datum.registerYear}${datum.studentId}`] = { score: datum.score, rank: datum.rank };
+                datum.registerYear = Number(datum.registerYear as unknown as string);
+                whereCondition.push({ registerYear: datum.registerYear, studentId: datum.studentId });
+            });
+            const registrations: Registration[] = await this.registrationRepository.find({ where: whereCondition });
+            registrations.forEach(registration => {
+                const updateData = dataToUpdate[`${registration.registerYear.toString()}${registration.studentId}`];
+                registration.score = updateData.score;
+                registration.rank = updateData.rank;
+            });
+            await this.registrationRepository.save(registrations);
+            req.flash("bottomRightSuccess", "Successfully updated");
+            res.json({ status: 200, redirectUri: "/register/index" });
+        });
     }
 
     private isDuringRegistration(metadata: RegistrationMetadata){

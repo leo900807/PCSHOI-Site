@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
         cb(null, attachmentDirectory);
     },
     filename: function(req, file, cb){
-        const generator = new TokenGenerator({ bitSize: 32 });
+        const generator = new TokenGenerator({ bitSize: 128 });
         file.originalname = Buffer.from(file.originalname, "latin1").toString("utf8");
         const extension = path.extname(file.originalname);
         const filename = path.basename(file.originalname, extension);

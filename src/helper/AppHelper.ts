@@ -43,6 +43,14 @@ export function isNumber(num: string){
     return !isNaN(Number(num));
 }
 
+export function isInteger(num: string){
+    return isNumber(num) && Number.isInteger(Number(num));
+}
+
+export function isPositiveInteger(num: string){
+    return isInteger(num) && Number(num) > 0;
+}
+
 export function errorSet(req: Request, errorFlash: string, errorData: string, bodyString: string){
     const error = validationResult(req);
     if(error.isEmpty())

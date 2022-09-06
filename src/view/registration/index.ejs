@@ -6,6 +6,7 @@
             <div class="page-header mb-4">
                 <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
                     <h3 class="fw-bold d-inline">Registration list of <%= nowOnYear %> year</h3>
+                    <a class="btn btn-sm btn-warning float-end ms-2" href="/register/upload">Edit score &amp; rank</a>
                     <a class="btn btn-sm btn-success float-end ms-2" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
                     <form class="d-inline" method="post" action="/register/index" onSubmit="return checkform();">
                         <button type="submit" class="btn btn-sm btn-secondary float-end ms-2">Filter</button>

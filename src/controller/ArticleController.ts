@@ -3,7 +3,7 @@ import { Router, Use, Get, Post, Patch, Delete, Req, Res, Next, Body, Query, Par
 import { AppDataSource } from "../data-source";
 import { AppController } from "./AppController";
 import { Article } from "../entity/Article";
-import { isAdmin, adjustTimeString, checkIdValid, isNumber, errorGet, errorSet } from "../helper/AppHelper";
+import { isAdmin, adjustTimeString, checkIdValid, isPositiveInteger, errorGet, errorSet } from "../helper/AppHelper";
 import { NormArticle, normalizeArticle } from "../helper/ArticleHelper";
 import { body } from "express-validator";
 
@@ -29,9 +29,7 @@ export class ArticleController extends AppController{
         let nowOnPage: number;
         if(!page)
             nowOnPage = 1;
-        else if(!isNumber(page))
-            return next("Not Found");
-        else if(Number(page) > 0)
+        else if(isPositiveInteger(page))
             nowOnPage = Number(page);
         else
             return next("Not Found");
