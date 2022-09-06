@@ -6,6 +6,7 @@ src/attachment
 .*.*.swp
 src/registration-metadata.json
 src/public/.well-known/*
+src/tmp/
 
 # secret files
 .env
