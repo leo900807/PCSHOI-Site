@@ -3,20 +3,26 @@
 <div class="col-12 col-sm-12 col-md-12 col-lg-12 mx-auto">
     <div class="card">
         <div class="card-body mt-3 mb-3 ms-5 me-5">
-            <div class="page-header mb-4">
+            <div class="page-header row mb-4">
                 <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
-                    <h3 class="fw-bold d-inline">Registration list of <%= nowOnYear %> year</h3>
-                    <a class="btn btn-sm btn-warning float-end ms-2" href="/register/upload">Edit score &amp; rank</a>
-                    <a class="btn btn-sm btn-success float-end ms-2" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
-                    <form class="d-inline" method="post" action="/register/index" onSubmit="return checkform();">
-                        <button type="submit" class="btn btn-sm btn-secondary float-end ms-2">Filter</button>
-                        <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
-                        <div class="float-end d-inline">
-                            <input id="yearofcontest" class="form-control form-control-sm" name="yearofcontest" value="<%= typeof yearOfContest !== "undefined" ? yearOfContest : "" %>" placeholder="Year of contest" required />
-                        </div>
-                    </form>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                        <h3 class="fw-bold d-inline">Registration list of <%= nowOnYear %> year</h3>
+                    </div>
+                    <div class="col align-self-end">
+                        <a class="btn btn-sm btn-warning float-end ms-2 mb-md-2" href="/register/upload">Edit score &amp; rank</a>
+                        <a class="btn btn-sm btn-success float-end ms-2 mb-md-2" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
+                        <form class="d-inline float-end" method="post" action="/register/index" onSubmit="return checkform();">
+                            <button type="submit" class="btn btn-sm btn-secondary float-end ms-2">Filter</button>
+                            <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
+                            <div class="float-end d-inline">
+                                <input id="yearofcontest" class="form-control form-control-sm" name="yearofcontest" value="<%= typeof yearOfContest !== "undefined" ? yearOfContest : "" %>" placeholder="Year of contest" required />
+                            </div>
+                        </form>
+                    </div>
                 <% } else { %>
-                    <h3 class="fw-bold d-inline">Registration history</h3>
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                        <h3 class="fw-bold d-inline">Registration history</h3>
+                    </div>
                 <% } %>
             </div>
             <hr class="col-12 title-hr">

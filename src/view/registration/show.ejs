@@ -3,16 +3,20 @@
 <div class="col-12 col-sm-12 col-md-9 col-lg-6 mx-auto registrationinfo-card">
     <div class="card">
         <div class="card-body mt-3 mb-3 ms-5 me-5">
-            <div class="mb-4">
-                <h4 class="fw-bold d-inline">Registration info</h4>
-                <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
-                    <a href="/register/index" class="float-end btn btn-sm btn-secondary">List of all registrations</a>
-                    <a href="/register/settings" class="float-end btn btn-sm btn-primary me-2">Registration settings</a>
-                <% } else { %>
-                    <% if(typeof loggedInUsername !== "undefined"){ %>
-                        <a href="/register/index" class="float-end btn btn-sm btn-secondary">Registration history</a>
+            <div class="page-header row mb-4">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-5">
+                    <h4 class="fw-bold d-inline">Registration info</h4>
+                </div>
+                <div class="col align-self-end">
+                    <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
+                        <a href="/register/index" class="float-end btn btn-sm btn-secondary mb-sm-0 mb-md-2">List of all registrations</a>
+                        <a href="/register/settings" class="float-end btn btn-sm btn-primary me-2">Registration settings</a>
+                    <% } else { %>
+                        <% if(typeof loggedInUsername !== "undefined"){ %>
+                            <a href="/register/index" class="float-end btn btn-sm btn-secondary">Registration history</a>
+                        <% } %>
                     <% } %>
-                <% } %>
+                </div>
             </div>
             <% if(typeof registration !== "undefined"){ %>
                 <div class="mb-3">
