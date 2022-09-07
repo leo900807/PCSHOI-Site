@@ -9,23 +9,23 @@
             <form method="post" action="/register" onsubmit="return checkForm();">
                 <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
                 <div class="form-group mb-3">
-                    <label for="yearofcontest">Year of contest</label>
+                    <label class="form-label" for="yearofcontest">Year of contest</label>
                     <input id="yearofcontest" class="form-control" name="yearofcontest" value="<%= yearOfContest %>" readonly />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="studentid">Student ID (e.g. 910996) (Cannot be changed)</label>
+                    <label class="form-label" for="studentid">Student ID (e.g. 910996) (Cannot be changed)</label>
                     <input id="studentid" class="form-control" name="studentid" value="<%= typeof studentid !== "undefined" ? studentid : "" %>" data-required="Student ID is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="classseat">Class &amp; Seat (e.g. 31035) (Cannot be changed)</label>
+                    <label class="form-label" for="classseat">Class &amp; Seat (e.g. 31035) (Cannot be changed)</label>
                     <input id="classseat" class="form-control" name="classseat" value="<%= typeof classseat !== "undefined" ? classseat : "" %>" data-required="class & Seat is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="password">Password for contest system in practice session</label>
+                    <label class="form-label" for="password">Password for contest system in practice session</label>
                     <input id="password" class="form-control" name="password" type="password" data-required="Password is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="repassword">Repeat password</label>
+                    <label class="form-label" for="repassword">Repeat password</label>
                     <input id="repassword" class="form-control" name="repassword" type="password" data-required="Repeat password is required" />
                 </div>
                 <div class="text-center">

@@ -9,15 +9,15 @@
             <form class="mb-2" method="post" action="/register/settings" onsubmit="return checkForm();">
                 <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
                 <div class="form-group mb-3">
-                    <label for="yearofcontest">Year of contest</label>
+                    <label class="form-label" for="yearofcontest">Year of contest</label>
                     <input id="yearofcontest" class="form-control" name="yearofcontest" value="<%= yearOfContest %>" data-required="Year of contest is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="registerstart">Register start</label>
+                    <label class="form-label" for="registerstart">Register start</label>
                     <input id="registerstart" class="form-control" name="registerstart" type="datetime-local" value="<%= registerStart %>" data-required="Register start is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="registerend">Register end</label>
+                    <label class="form-label" for="registerend">Register end</label>
                     <input id="registerend" class="form-control" name="registerend" type="datetime-local" value="<%= registerEnd %>" data-required="Register end is required" />
                 </div>
                 <div class="text-center">

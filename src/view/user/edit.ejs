@@ -9,23 +9,23 @@
             <form method="post" data-method="patch" action="/users" onsubmit="return checkForm();">
                 <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
                 <div class="form-group mb-3">
-                    <label for="nickname">Nickname</label>
+                    <label class="form-label" for="nickname">Nickname</label>
                     <input id="nickname" class="form-control" name="nickname" value="<%= typeof nickname !== "undefined" ? nickname : "" %>" data-required="Nickname is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="oldpassword">Old Password</label>
+                    <label class="form-label" for="oldpassword">Old Password</label>
                     <input id="oldpassword" class="form-control" name="oldpassword" type="password" data-required="Old password is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="newpassword">New password (left blank if you don't want to change it)</label>
+                    <label class="form-label" for="newpassword">New password (left blank if you don't want to change it)</label>
                     <input id="newpassword" class="form-control" name="newpassword" type="password" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="renewpassword">Repeat new password</label>
+                    <label class="form-label" for="renewpassword">Repeat new password</label>
                     <input id="renewpassword" class="form-control" name="renewpassword" type="password" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="email">Email</label>
+                    <label class="form-label" for="email">Email</label>
                     <input id="email" class="form-control" name="email" type="email" value="<%= typeof email !== "undefined" ? email : "" %>" data-required="Email is required" />
                 </div>
                 <div class="text-center">

@@ -81,6 +81,13 @@ export class RegistrationController extends AppController{
             nowOnYear = Number(year);
         else
             return next("Not Found");
+        const years = await this.registrationRepository
+            .createQueryBuilder("registration")
+            .select("registerYear")
+            .distinct(true)
+            .orderBy("registration.registerYear", "DESC")
+            .getRawMany();
+        res.locals.years = years;
         const registrations: Registration[] = await this.registrationRepository.find({ where: { registerYear: nowOnYear }, relations: { registrant: true }, order: { createdAt: "ASC" } });
         res.locals.pageTitle = "Registration list";
         res.locals.nowOnYear = nowOnYear;

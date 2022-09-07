@@ -9,27 +9,27 @@
             <form method="post" action="/users" onsubmit="return checkForm();">
                 <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
                 <div class="form-group mb-3">
-                    <label for="username">Username (Cannot be changed)</label>
+                    <label class="form-label" for="username">Username (Cannot be changed)</label>
                     <input id="username" class="form-control" name="username" value="<%= typeof username !== "undefined" ? username : "" %>" data-required="Username is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="password">Password</label>
+                    <label class="form-label" for="password">Password</label>
                     <input id="password" class="form-control" name="password" type="password" data-required="Password is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="repassword">Repeat Password</label>
+                    <label class="form-label" for="repassword">Repeat Password</label>
                     <input id="repassword" class="form-control" name="repassword" type="password" data-required="Repeat password is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="nickname">Nickname</label>
+                    <label class="form-label" for="nickname">Nickname</label>
                     <input id="nickname" class="form-control" name="nickname" value="<%= typeof nickname !== "undefined" ? nickname : "" %>" data-required="Nickname is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="realname">Realname (In Chinese, cannot be changed)</label>
+                    <label class="form-label" for="realname">Realname (In Chinese, cannot be changed)</label>
                     <input id="realname" class="form-control" name="realname" value="<%= typeof realname !== "undefined" ? realname : "" %>" data-required="Realname is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="email">Email</label>
+                    <label class="form-label" for="email">Email</label>
                     <input id="email" class="form-control" name="email" type="email" value="<%= typeof email !== "undefined" ? email : "" %>" data-required="Email is required" />
                 </div>
                 <div class="text-center">

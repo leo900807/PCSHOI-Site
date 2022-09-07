@@ -8,15 +8,24 @@
                     <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                         <h3 class="fw-bold d-inline">Registration list of <%= nowOnYear %> year</h3>
                     </div>
-                    <div class="col align-self-end">
-                        <a class="btn btn-sm btn-warning float-end ms-2 mb-md-2" href="/register/upload">Edit score &amp; rank</a>
-                        <a class="btn btn-sm btn-success float-end ms-2 mb-md-2" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
-                        <form class="d-inline float-end" method="post" action="/register/index" onSubmit="return checkform();">
+                    <div class="col">
+                        <a class="btn btn-sm btn-warning float-end ms-2 mt-sm-1 mt-1 mb-1" href="/register/upload">Edit score &amp; rank</a>
+                        <a class="btn btn-sm btn-success float-end ms-2 mt-sm-1 mt-1 mb-1" href="/register/download?year=<%= nowOnYear %>">Download CSV</a>
+                        <form class="float-end d-inline ms-2 mt-sm-1 mt-1 mb-1" method="post" action="/register/index" onSubmit="return checkform();">
                             <button type="submit" class="btn btn-sm btn-secondary float-end ms-2">Filter</button>
                             <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
-                            <div class="float-end d-inline">
-                                <input id="yearofcontest" class="form-control form-control-sm" name="yearofcontest" value="<%= typeof yearOfContest !== "undefined" ? yearOfContest : "" %>" placeholder="Year of contest" required />
+                            <div class="d-inline-block float-end">
+                                <select id="yearofcontest" class="form-select form-select-sm" name="yearofcontest" />
+                                    <% years.forEach(year => { %>
+                                        <% if(year === nowOnYear){ %>
+                                            <option value="<%= year.registerYear %>" selected><%= year.registerYear %></option>
+                                        <% } else { %>
+                                            <option value="<%= year.registerYear %>"><%= year.registerYear %></option>
+                                        <% } %>
+                                    <% }); %>
+                                </select>
                             </div>
+                            <span class="float-end mt-1 me-2">Year of contest</span>
                         </form>
                     </div>
                 <% } else { %>

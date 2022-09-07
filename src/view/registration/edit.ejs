@@ -9,11 +9,11 @@
             <form method="post" data-method="patch" action="/register" onsubmit="return checkForm();">
                 <input id="csrf-token" name="_csrf" value="<%= csrfToken %>" type="hidden" />
                 <div class="form-group mb-3">
-                    <label for="newpassword">New password for contest system in practice session</label>
+                    <label class="form-label" for="newpassword">New password for contest system in practice session</label>
                     <input id="newpassword" class="form-control" name="newpassword" type="password" data-required="Password is required" />
                 </div>
                 <div class="form-group mb-3">
-                    <label for="renewpassword">Repeat new password</label>
+                    <label class="form-label" for="renewpassword">Repeat new password</label>
                     <input id="renewpassword" class="form-control" name="renewpassword" type="password" data-required="Repeat new password is required" />
                 </div>
                 <div class="text-center">
