@@ -226,7 +226,7 @@ AppDataSource.initialize().then(async connection => {
             res.locals.pageTitle = "Error";
             if(err === "Not Found")
                 res.render("error/404.ejs");
-            else if(err.code && err.code === "EBADCSRFTOKEN")
+            else if(err.code && err.code === "EBADCSRFTOKEN") // eslint-disable-line @typescript-eslint/no-unsafe-member-access
                 res.sendStatus(400);
             else if(process.env.NODE_ENV === "production")
                 res.render("error/500.ejs");
