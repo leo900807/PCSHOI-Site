@@ -17,12 +17,11 @@ export class IndexController extends AppController{
     async index(@Req req: Request, @Res res: Response){
         // Articles
         let rawArticles: Article[];
-        let allArticles: NormArticle[];
         if(req.isAuthenticated() && req.user.admin)
             rawArticles = await this.articleRepository.find({ order: { createdAt: "DESC" } });
         else
             rawArticles = await this.articleRepository.find({ where: { isPublic: true }, order: { createdAt: "DESC" } });
-        allArticles = normalizeArticle(rawArticles);  // eslint-disable-line prefer-const
+        const allArticles: NormArticle[] = normalizeArticle(rawArticles);
         let pinnedArticles: NormArticle[] = allArticles.filter(article => article.isPinned === true);
         let articles: NormArticle[] = allArticles.filter(article => article.isPinned === false);
         if(pinnedArticles.length > 5)
@@ -32,12 +31,11 @@ export class IndexController extends AppController{
 
         // Pastexams
         let rawPastexams: Pastexam[];
-        let allPastexams: NormPastexam[];
         if(req.isAuthenticated() && req.user.admin)
             rawPastexams = await this.pastexamRepository.find({ order: { createdAt: "DESC" } });
         else
             rawPastexams = await this.pastexamRepository.find({ where: { isPublic: true }, order: { createdAt: "DESC" } });
-        allPastexams = normalizePastexam(rawPastexams);  // eslint-disable-line prefer-const
+        const allPastexams: NormPastexam[] = normalizePastexam(rawPastexams);
         let pinnedPastexams: NormPastexam[] = allPastexams.filter(pastexam => pastexam.isPinned === true);
         let pastexams: NormPastexam[] = allPastexams.filter(pastexam => pastexam.isPinned === false);
         if(pinnedPastexams.length > 5)
