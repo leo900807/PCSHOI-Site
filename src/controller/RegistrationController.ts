@@ -21,7 +21,8 @@ import { RegistrationMetadata,  // eslint-disable-line @typescript-eslint/no-unu
          renewpasswordValidator,
          getRegistrationMetadata,
          setRegistrationMetadata,
-         scoreRankChecker } from "../helper/RegistrationHelper";
+         scoreRankChecker,
+         transScoreRank } from "../helper/RegistrationHelper";
 import { encrypt } from "../helper/PasswordHelper";
 import { sendMail } from "../helper/MailingHelper";
 import ObjectsToCsv = require("objects-to-csv");
@@ -333,10 +334,10 @@ export class RegistrationController extends AppController{
                 return res.sendStatus(422);
             }
             const whereCondition: { registerYear: number, studentId: string }[] = [];
-            const dataToUpdate: { [key: string]: { score: number, rank: number } } = {};
+            const dataToUpdate: { [key: string]: { score: number | null, rank: number | null } } = {};
             data.forEach(datum => {
-                datum.score = Number(datum.score as unknown as string);
-                datum.rank = Number(datum.rank as unknown as string);
+                datum.score = transScoreRank(datum.score as unknown as string);
+                datum.rank = transScoreRank(datum.rank as unknown as string);
                 dataToUpdate[`${datum.registerYear}${datum.studentId}`] = { score: datum.score, rank: datum.rank };
                 datum.registerYear = Number(datum.registerYear as unknown as string);
                 whereCondition.push({ registerYear: datum.registerYear, studentId: datum.studentId });

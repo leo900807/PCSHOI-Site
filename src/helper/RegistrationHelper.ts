@@ -55,8 +55,8 @@ type RegistrationEditBody = {
 export type ScoreRank = {
     registerYear: number;
     studentId: string;
-    score: number;
-    rank: number;
+    score: number | null;
+    rank: number | null;
 };
 
 export const REGISTRATION_METADATA_DEFAULT: RegistrationMetadata = {
@@ -202,10 +202,16 @@ export function scoreRankChecker(obj: any): obj is ScoreRank[]{
                 isPositiveInteger(e.registerYear) &&
                 typeof e.studentId === "string" &&
                 typeof e.score === "string" &&
-                isNumber(e.score) &&
+                (isNumber(e.score) || e.score === "N/A") &&
                 typeof e.rank === "string" &&
-                isPositiveInteger(e.rank)
+                (isPositiveInteger(e.rank) || e.rank === "N/A")
             );
         })
     );
+}
+
+export function transScoreRank(str: string): number | null{
+    if(str === "N/A")
+        return null;
+    return Number(str);
 }

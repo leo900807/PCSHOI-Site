@@ -8,7 +8,7 @@
             </div>
             <form method="post" data-method="patch" action="/register/upload?_csrf=<%= csrfToken %>" enctype="multipart/form-data" onsubmit="return checkForm();">
                 <div class="form-group mb-3">
-                    <label for="scorerank">CSV File contains below columns, "registerYear", "studentId", "score", "rank"</label>
+                    <label for="scorerank">CSV File contains below columns, "registerYear", "studentId", "score", "rank"<br>Use "N/A" to set score or rank to null</label>
                     <input id="scorerank" class="form-control" name="scorerank" type="file" />
                 </div>
                 <div class="text-center">
