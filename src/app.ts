@@ -92,9 +92,9 @@ AppDataSource.initialize().then(async connection => {
             { resource: User, options: { ...resourceOptions, properties: { username: { isTitle: true } }, listProperties: ["username", "nickname", "realname", "email", "admin", "lastLoginAt", "createdAt", "updatedAt"] } },
             { resource: Article, options: { ...resourceOptions, properties: { content: { type: "textarea" } } } },
             { resource: AdminUser, options: resourceOptions },
-            { resource: Pastexam, options: resourceOptions },
+            { resource: Pastexam, options: { ...resourceOptions, properties: { content: { type: "textarea" } } } },
             { resource: Attachment, options: resourceOptions },
-            { resource: Registration, options: resourceOptions }
+            { resource: Registration, options: { ...resourceOptions, listProperties: ["registrantId", "studentId", "classSeat", "verificationCode", "registerYear", "score", "rank", "createdAt"] } }
         ],
         branding: {
             companyName: "PCSHOI Site Admin Page"
