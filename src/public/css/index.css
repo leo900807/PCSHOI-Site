@@ -27,7 +27,7 @@
 }
 
 @media only screen and (min-width: 768px) and (min-height: 630px) {
-    .login-card, .editscorerank-card {
+    .login-card, .editscorerank-card, .error-card {
         padding-top: 8%;
     }
     .userinfo-card, .registrationinfo-card {
