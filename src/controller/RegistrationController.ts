@@ -63,7 +63,7 @@ export class RegistrationController extends AppController{
     private readonly registrationRepository = AppDataSource.getRepository(Registration);
 
     @Get("/index")
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/register/index"))
     async index(@Req req: Request, @Res res: Response, @Next next: NextFunction, @Query("year") year?: string){
         if(!req.user.admin){
             const registrations: Registration[] = await this.registrationRepository.find({ where: { registrantId: req.user.id }, order: { createdAt: "ASC" } });
@@ -108,7 +108,7 @@ export class RegistrationController extends AppController{
     }
 
     @Get("/new")
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/register/new"))
     async new(@Req req: Request, @Res res: Response){
         const metadata: RegistrationMetadata = await getRegistrationMetadata();
         const pastRegistration: Registration = await this.registrationRepository.findOneBy({ registrantId: req.user.id, registerYear: metadata.yearOfContest });
@@ -128,7 +128,7 @@ export class RegistrationController extends AppController{
     }
 
     @Post()
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/register/new"))
     @Use(studentIdValidator)
     @Use(classSeatValidator)
     @Use(passwordValidator)
@@ -164,7 +164,7 @@ export class RegistrationController extends AppController{
     }
 
     @Get("/edit")
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/register/edit"))
     async edit(@Req req: Request, @Res res: Response){
         const metadata: RegistrationMetadata = await getRegistrationMetadata();
         if(!this.isDuringRegistration(metadata)){
@@ -183,7 +183,7 @@ export class RegistrationController extends AppController{
     }
 
     @Patch()
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/register/edit"))
     @Use(newpasswordValidator)
     @Use(renewpasswordValidator)
     async update(@Req req: Request, @Res res: Response, @Body body: RegistrationEditForm){

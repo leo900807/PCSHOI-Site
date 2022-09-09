@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Router, Use, Get, Post, Delete, Req, Res, Body } from "@reflet/express";
+import { Router, Use, Get, Post, Delete, Req, Res, Body, Query } from "@reflet/express";
 import { UseIf } from "@reflet/express-middlewares";
 import { AppDataSource } from "../data-source";
 import { AppController } from "./AppController";
@@ -23,8 +23,10 @@ export class SessionController extends AppController{
         req.flash("bottomRightSuccess", "You have already logged in");
         res.redirect("/");
     }])
-    async new(@Res res: Response){
+    async new(@Res res: Response, @Query("next") nextTo?: string){
         res.locals.pageTitle = "Login";
+        if(nextTo)
+            res.locals.next = nextTo;
         res.render("session/new.ejs");
     }
 
@@ -41,30 +43,34 @@ export class SessionController extends AppController{
         }
     ])
     @Use(passport.authenticate("local", { failureRedirect: "/login" }))
-    async create(@Req req: Request, @Res res: Response, @Body("rememberMe") rememberMe?: string){
+    async create(@Req req: Request, @Res res: Response, @Body body: { rememberMe?: string, next?: string }){
         const user: User = await this.userRepository.findOneById(req.user.id);
-        if(rememberMe && rememberMe === "true"){
+        const now = new Date();
+        if(body.rememberMe && body.rememberMe === "true"){
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000;  // 30 days
-            user.rememberCreatedAt = new Date();
+            user.rememberCreatedAt = now;
         }
-        user.lastLoginAt = new Date();
+        user.lastLoginAt = now;
         await this.userRepository.save(user);
         req.flash("bottomRightSuccess", "Successfully logged in");
-        res.redirect("/");
+        if(body.next)
+            res.redirect(body.next);
+        else
+            res.redirect("/");
     }
 
     @Delete()
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @UseIf(req => !req.isAuthenticated(), [(req: Request, res: Response, next: NextFunction) => {
         req.flash("bottomRightError", "You havn't logged in yet");
-        res.redirect("/");
+        res.sendStatus(204);
     }])
     async destroy(@Req req: Request, @Res res: Response){
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         req.logout(err => {
             req.flash("bottomRightSuccess", "Successfully logged out");
-            res.json({ status: 200, redirectUri: "/" });
+            res.sendStatus(204);
         });
     }
 

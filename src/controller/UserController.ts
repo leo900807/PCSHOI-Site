@@ -42,7 +42,7 @@ export class UserController extends AppController{
     private readonly userRepository = AppDataSource.getRepository(User);
 
     @Get()
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/users"))
     async show(@Req req: Request, @Res res: Response){
         const user: User = await this.userRepository.findOneById(req.user.id);
         res.locals.pageTitle = "User info";
@@ -98,7 +98,7 @@ export class UserController extends AppController{
     }
 
     @Get("/edit")
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/users/edit"))
     async edit(@Req req: Request, @Res res: Response){
         const user: User = await this.userRepository.findOneById(req.user.id);
         const { error, data } = errorGet(req, "edit user error", "edit user data");
@@ -111,7 +111,7 @@ export class UserController extends AppController{
     }
 
     @Patch()
-    @Use(isLoggedIn)
+    @Use(isLoggedIn("/users/edit"))
     @Use(oldpasswordValidator)
     @Use(newpasswordValidator)
     @Use(renewpasswordValidator)

@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 
-export function isLoggedIn(req: Request, res: Response, next: NextFunction){
-    if(req.isAuthenticated())
-        return next();
-    req.flash("bottomRightError", "Please login before operation");
-    res.redirect("/login");
+export function isLoggedIn(nextTo?: string){
+    return (req: Request, res: Response, next: NextFunction) =>{
+        if(req.isAuthenticated())
+            return next();
+        req.flash("bottomRightError", "Please login before operation");
+        if(nextTo)
+            res.redirect(303, `/login?next=${nextTo}`);
+        else
+            res.redirect(303, "/login");
+    };
 }
 
 export function isLoggedInWithMessage(message?: string){
