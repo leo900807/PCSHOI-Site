@@ -77,7 +77,7 @@ export async function sendMailBatch(mailOptions: SendMailOptions[]){
     mailer.on("idle", () => {
         while(mailer.isIdle() && mailOptions.length){
             const options = mailOptions[0];
-            mailer.sendMail(mailOptions.shift(), (err, info) => {
+            mailer.sendMail(mailOptions.shift(), (err, info) => {  //eslint-disable-line @typescript-eslint/no-unused-vars
                 if(err)
                     console.error(`Unable to send mail to ${options.to}: ${err}`);
                 else
