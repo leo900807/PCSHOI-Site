@@ -42,5 +42,7 @@ export async function sendMail(mailOptions: SendMailOptions){
     mailer.sendMail(mailOptions, (err, info) => {  // eslint-disable-line @typescript-eslint/no-unused-vars
         if(err)
             console.error(`Unable to send mail to ${mailOptions.to}: ${err}`);
+        else
+            console.log(`Successfully sent to ${mailOptions.to}`);
     });
 }
