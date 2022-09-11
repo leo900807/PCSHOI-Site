@@ -46,3 +46,43 @@ export async function sendMail(mailOptions: SendMailOptions){
             console.log(`Successfully sent to ${mailOptions.to}`);
     });
 }
+
+async function getBatchMailer(){
+    const accessToken = await getAccessToken();
+    if(!accessToken)
+        return null;
+    return createTransport({ // @ts-ignore TS2769
+        pool: true,
+        service: "Gmail",
+        auth: {
+            type: "OAuth2",
+            user: process.env.GMAIL_ACCOUNT,
+            clientId: process.env.GMAIL_CLIENT_ID,
+            clientSecret: process.env.GMAIL_CLIENT_SECRET,
+            refreshToken: process.env.GMAIL_REFRESH_TOKEN,
+            accessToken: accessToken.token
+        },
+        maxConnection: 5,
+        maxMessages: 100,
+        reteLimit: 10
+    });
+}
+
+export async function sendMailBatch(mailOptions: SendMailOptions[]){
+    const mailer = await getBatchMailer();
+    if(!mailer){
+        console.error(`Unable to send batch mail`);
+        return;
+    }
+    mailer.on("idle", () => {
+        while(mailer.isIdle() && mailOptions.length){
+            const options = mailOptions[0];
+            mailer.sendMail(mailOptions.shift(), (err, info) => {
+                if(err)
+                    console.error(`Unable to send mail to ${options.to}: ${err}`);
+                else
+                    console.log(`Successfully sent to ${options.to}`);
+            });
+        }
+    });
+}
