@@ -32,7 +32,7 @@ export class Registration extends Base{
     @Column()
     registerYear: number;
 
-    @Column("decimal", { precision: 5, scale: 2, nullable: true })
+    @Column("decimal", { precision: 6, scale: 2, nullable: true })
     score: number;
 
     @Column({ nullable: true })
