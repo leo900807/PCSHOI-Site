@@ -113,7 +113,7 @@ export class ForgotpwdController extends AppController{
         <p>If you request a new link, the old link will expire.</p>
         <p><strong><font color="red">This link will expire in 1 hour.</font></strong></p>
 
-        <p>Reset password link: ${process.env.WEBSITE_ROOT_URI}/forgotpwd/resetpwd?token=${user.resetPasswordToken}</p>
+        <p>Reset password link: <a href="${process.env.WEBSITE_ROOT_URI}/forgotpwd/resetpwd?token=${user.resetPasswordToken}">${process.env.WEBSITE_ROOT_URI}/forgotpwd/resetpwd?token=${user.resetPasswordToken}</a></p>
         <br>
         <p>Best regards,<br>
         PCSHOI Site</p>`;
