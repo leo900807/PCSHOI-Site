@@ -1,0 +1,56 @@
+name: Build CI
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on: [push]
+jobs:
+  Build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-latest]
+        node_version: [16]
+        redis_version: ['5.x', '6.x']
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node_version }}
+
+    - name: Setup MySQL
+      uses: mirromutth/mysql-action@v1.1
+      with:
+        mysql version: 8.0
+        mysql root password: 'root_password'
+
+    - name: Setup Redis ${{ matrix.redis_version }}
+      uses: shogo82148/actions-setup-redis@v1
+      with:
+        redis-version: ${{ matrix.redis_version }}
+
+    - name: Install prerequisites
+      run: |
+        sudo npm install -g npm@latest
+        npm install
+
+    - name: Setup environment
+      run: |
+        cp .env.sample .env
+        cp src/data-source.ts.sample src/data-source.ts
+        sed -i 's/username: "username"/username: "root"/g' src/data-source.ts
+        sed -i 's/password: "password"/password: "root_password"/g' src/data-source.ts
+
+    - name: Waiting for MySQL
+      run: |
+        while ! mysqladmin ping --host=127.0.0.1 -u root --password=root_password --silent; do
+          sleep 1
+        done
+
+    - name: Start
+      run: |
+        npm run db:create
+        npm run db:seed
+        npm start & npx wait-on http://localhost:3000
