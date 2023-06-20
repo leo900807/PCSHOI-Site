@@ -1,6 +1,6 @@
 {
    "name": "pcshoi_site",
-   "version": "1.3.5",
+   "version": "1.3.6",
    "description": "A site about information contest in PCSH.",
    "devDependencies": {
       "@types/bcrypt": "^5.0.0",
@@ -59,7 +59,7 @@
    "scripts": {
       "start": "ts-node --files src/app.ts",
       "lint": "eslint . --ext .ts",
-      "db:create": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:create",
+      "db:create": "ts-node --files src/createDB.ts",
       "db:drop": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:drop",
       "db:seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed",
       "migration:run": "ts-node ./node_modules/typeorm/cli.js migration:run -d ./src/data-source.ts",

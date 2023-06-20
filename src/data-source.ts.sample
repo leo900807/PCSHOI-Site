@@ -7,7 +7,7 @@ const options: DataSourceOptions & SeederOptions = {
     username: "username",  // to be modified
     password: "password",  // to be modified
     database: "pcshoi_site",
-    synchronize: true,
+    synchronize: false,
     logging: false,
     entities: [
         "./src/entity/*.ts"

@@ -9,8 +9,15 @@ Node.js version: v16.13.2
 #### 1. Install prerequisites
 
 ```bash
-$ sudo apt-get install nodejs redis
+$ sudo apt-get update
+$ sudo apt-get install gcc g++ make
+$ curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+$ sudo apt-get install mysql-server nodejs redis
+$ sudo npm install -g npm@latest
 ```
+
+Configure MySQL before doing step 2.
+
 #### 2. Clone PCSHOI-Site repo
 
 ```bash
