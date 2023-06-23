@@ -5,8 +5,8 @@ import { AppDataSource } from "./data-source";
     createDatabase({ ifNotExist: true, synchronize: false }).then(async() => {
         AppDataSource.initialize().then(async connection => {
             await connection.synchronize();
-            await connection.runMigrations({ transaction: 'all' });
-            console.log("Database successfully created.");
+            await connection.runMigrations({ fake: true });
+            console.log("Database was successfully created.");
             connection.close();
         });
     }).catch(err => console.log(err));
