@@ -200,6 +200,12 @@ AppDataSource.initialize().then(async connection => {
         next();
     });
 
+    // setup og:url
+    app.use((req: Request, res: Response, next: NextFunction) => {
+        res.locals.ogUrl = process.env.WEBSITE_ROOT_URI + req.baseUrl + req.path;
+        next();
+    });
+
     // register routers
     register(app, [
         IndexController,
@@ -224,8 +230,10 @@ AppDataSource.initialize().then(async connection => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         app.use((err, req: Request, res: Response, next: NextFunction) => {
             res.locals.pageTitle = "Error";
-            if(err === "Not Found")
+            if(err === "Not Found"){
+                delete res.locals.ogUrl;
                 res.status(404).render("error/404.ejs");
+            }
             else if(err.code && err.code === "EBADCSRFTOKEN") // eslint-disable-line @typescript-eslint/no-unsafe-member-access
                 res.sendStatus(400);
             else if(process.env.NODE_ENV === "production")
