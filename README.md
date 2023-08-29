@@ -1,5 +1,7 @@
 # PCSHOI Site
 
+[![Build CI](https://github.com/leo900807/PCSHOI-Site/actions/workflows/Build-CI.yml/badge.svg)](https://github.com/leo900807/PCSHOI-Site/actions/workflows/Build-CI.yml)
+
 A site about information contest in PCSH.  
 
 Node.js version: v16.13.2
