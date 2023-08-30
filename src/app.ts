@@ -144,7 +144,7 @@ AppDataSource.initialize().then(async connection => {
         if(!user){
             req.flash("bottomRightError", "Invalid username or password");
             done(null, false);
-            return
+            return;
         }
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         await compare(password, user.encryptedPassword).then(result => {

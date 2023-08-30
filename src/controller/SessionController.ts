@@ -34,15 +34,26 @@ export class SessionController extends AppController{
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     @UseIf(req => req.isAuthenticated(), [(req: Request, res: Response, next: NextFunction) => {
         req.flash("bottomRightSuccess", "You have already logged in");
-        res.redirect("/");
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        if(req.body.next)
+            res.redirect(req.body.next);  // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+        else
+            res.redirect("/");
     }])
     @UseIf(req => (req.body as LoginBody).username === "" || (req.body as LoginBody).password === "", [
         (req: Request, res: Response, next: NextFunction) => {  // eslint-disable-line @typescript-eslint/no-unused-vars
             req.flash("bottomRightError", "Username and password are both required");
-            res.redirect("/login");
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+            if(req.body.next)
+                res.redirect(`/login?next=${req.body.next}`);  // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+            else
+                res.redirect("/login");
         }
     ])
-    @Use(passport.authenticate("local", { failureRedirect: "/login" }))
+    @Use((req: Request, res: Response, next: NextFunction) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        passport.authenticate("local", { failureRedirect: "/login" + (req.body.next ? "?next=" + (req.body.next as string) : "") })(req, res, next);
+    })
     async create(@Req req: Request, @Res res: Response, @Body body: { rememberMe?: string, next?: string }){
         const user: User = await this.userRepository.findOneById(req.user.id);
         const now = new Date();
