@@ -12,6 +12,7 @@
     },
     "plugins": ["@typescript-eslint"],
     "rules": {
+        "semi": ["error", "always"],
         "prefer-arrow/prefer-arrow-functions": "off",
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-unsafe-argument": "off",
