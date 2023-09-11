@@ -65,7 +65,7 @@
                             <td class="table-cell"><%= registration.studentId %></td>
                             <td class="table-cell"><%= registration.verificationCode %></td>
                             <td class="table-cell"><%= typeof registration.score !== "undefined" && registration.score ? parseFloat(registration.score) : "N/A" %></td>
-                            <td class="table-cell<%= typeof registration.rank !== "undefined" && registration.rank && registration.rank <= 10 ? ` rank-${registration.rank}` : "" %>"><%= typeof registration.rank !== "undefined" && registration.rank ? registration.rank : "N/A" %></td>
+                            <td class="table-cell<%= typeof registration.rank !== "undefined" && registration.rank && registration.rank <= 12 ? ` rank-${registration.rank}` : "" %>"><%= typeof registration.rank !== "undefined" && registration.rank ? registration.rank : "N/A" %></td>
                             <% if(typeof isAdmin !== "undefined" && isAdmin === true){ %>
                                 <td class="table-cell">
                                     <form class="row ms-0 me-0" method="post" data-method="delete" action="/register/<%= registration.id %>">
