@@ -55,6 +55,7 @@ AppDataSource.initialize().then(async connection => {
     let accessLogStream;
     const logDirectory = path.join(__dirname, "../log");
     fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+    app.enable("trust proxy");
     if(process.env.NODE_ENV === "development"){
         accessLogStream = fs.createWriteStream(path.join(logDirectory, "development.log"), { flags: "a" });
         app.use(logger("dev", { stream: accessLogStream }));
