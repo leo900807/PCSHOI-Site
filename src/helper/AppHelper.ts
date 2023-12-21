@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
 
 export function isLoggedIn(nextTo?: string){
-    return (req: Request, res: Response, next: NextFunction) =>{
+    return (req: Request, res: Response, next: NextFunction) => {
         if(req.isAuthenticated())
             return next();
         req.flash("bottomRightError", "Please login before operation");
