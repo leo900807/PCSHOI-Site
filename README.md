@@ -4,7 +4,7 @@
 
 A site about information contest in PCSH.  
 
-Node.js version: v16.13.2
+Node.js version: v22.14.0
 
 ## Installation
 
