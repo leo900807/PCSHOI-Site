@@ -13,7 +13,7 @@ Node.js version: v22.14.0
 ```bash
 $ sudo apt-get update
 $ sudo apt-get install gcc g++ make
-$ curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+$ curl -sL https://deb.nodesource.com/setup_22.x | sudo -E bash -
 $ sudo apt-get install mysql-server nodejs redis
 $ sudo npm install -g npm@latest
 ```
