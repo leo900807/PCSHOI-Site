@@ -17,7 +17,7 @@
                             <div class="d-inline-block float-end">
                                 <select id="yearofcontest" class="form-select form-select-sm" name="yearofcontest" />
                                     <% years.forEach(year => { %>
-                                        <% if(year === nowOnYear){ %>
+                                        <% if(year.registerYear === nowOnYear){ %>
                                             <option value="<%= year.registerYear %>" selected><%= year.registerYear %></option>
                                         <% } else { %>
                                             <option value="<%= year.registerYear %>"><%= year.registerYear %></option>
