@@ -1,6 +1,6 @@
 {
    "name": "pcshoi_site",
-   "version": "1.3.14a",
+   "version": "1.3.14b",
    "description": "A site about information contest in PCSH.",
    "devDependencies": {
       "@types/bcrypt": "^5.0.0",
